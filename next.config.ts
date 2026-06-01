@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         port: "",
       },
+      {
+        hostname: "good-dotterel-373.convex.cloud",
+        protocol: "https",
+        port: "",
+      },
     ],
   },
 };
