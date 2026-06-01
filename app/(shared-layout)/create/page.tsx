@@ -1,6 +1,6 @@
 "use client";
 
-import { createBlogAction } from "@/app/actions";
+import { createBlogAction, getImageUploadUrlAction } from "@/app/actions";
 import { postSchema } from "@/app/schemas/blog";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Id } from "@/convex/_generated/dataModel";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useTransition } from "react";
@@ -37,9 +38,29 @@ export default function CreatePage() {
 
   function onSubmit(values: z.infer<typeof postSchema>) {
     startTransition(async () => {
-      await createBlogAction(values);
+      const uploadUrl = await getImageUploadUrlAction();
+
+      const uploadResult = await fetch(uploadUrl, {
+        method: "POST",
+        headers: { "Content-Type": values.image.type },
+        body: values.image,
+      });
+
+      if (!uploadResult.ok) {
+        form.setError("image", { message: "Gagal upload gambar" });
+        return;
+      }
+
+      const { storageId } = await uploadResult.json();
+
+      await createBlogAction({
+        title: values.title,
+        content: values.content,
+        storageId: storageId as Id<"_storage">,
+      });
     });
   }
+
   return (
     <div className="py-12">
       <div className="text-center mb-12">
