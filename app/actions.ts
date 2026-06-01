@@ -1,12 +1,12 @@
 "use server";
 
+import { api } from "@/convex/_generated/api";
+import { getToken } from "@/lib/auth-server";
+import { fetchMutation } from "convex/nextjs";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import z from "zod";
 import { postSchema } from "./schemas/blog";
-import { fetchMutation, fetchQuery } from "convex/nextjs";
-import { api } from "@/convex/_generated/api";
-import { redirect } from "next/navigation";
-import { getToken } from "@/lib/auth-server";
-import { revalidatePath } from "next/cache";
 
 export async function createBlogAction(values: z.infer<typeof postSchema>) {
   try {
