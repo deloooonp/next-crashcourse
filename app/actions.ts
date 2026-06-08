@@ -24,6 +24,16 @@ export async function createBlogAction(
     storageId: Id<"_storage">;
   },
 ) {
+  const actionSchema = postSchema
+    .omit({ image: true })
+    .extend({ storageId: z.string().min(1) });
+
+  const parsed = actionSchema.safeParse(values);
+
+  if (!parsed.success) {
+    throw new Error("Something went wrong!");
+  }
+
   try {
     const token = await getToken();
 
