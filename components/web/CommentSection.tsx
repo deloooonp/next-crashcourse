@@ -4,25 +4,25 @@ import { commentSchema } from "@/app/schemas/comments";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "convex/react";
+import { Preloaded, useMutation, usePreloadedQuery } from "convex/react";
 import { Loader2, MessageSquare } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import { Textarea } from "../ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
+import { Textarea } from "../ui/textarea";
 
-export function CommentSection() {
+export function CommentSection(props: {
+  preloadedComments: Preloaded<typeof api.comments.getCommentsByPostId>;
+}) {
   const params = useParams<{ postId: Id<"posts"> }>();
-  const data = useQuery(api.comments.getCommentsByPostId, {
-    postId: params.postId,
-  });
+  const data = usePreloadedQuery(props.preloadedComments);
   const [isPending, startTransition] = useTransition();
   const createComment = useMutation(api.comments.createComment);
   const form = useForm({
