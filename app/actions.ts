@@ -1,13 +1,13 @@
 "use server";
 
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { getToken } from "@/lib/auth-server";
 import { fetchMutation } from "convex/nextjs";
-import { revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import z from "zod";
 import { postSchema } from "./schemas/blog";
-import { Id } from "@/convex/_generated/dataModel";
 
 export async function getImageUploadUrlAction() {
   const token = await getToken();
@@ -46,10 +46,10 @@ export async function createBlogAction(
       },
       { token },
     );
-  } catch (error) {
+  } catch {
     return { error: "Failed to create post" };
   }
 
-  revalidatePath("/blog");
+  updateTag("blog");
   return redirect("/blog");
 }
