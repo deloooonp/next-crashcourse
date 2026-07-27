@@ -46,7 +46,7 @@ export async function createBlogAction(
       },
       { token },
     );
-  } catch (error) {
+  } catch {
     return { error: "Failed to create post" };
   }
 
