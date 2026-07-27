@@ -53,7 +53,6 @@ async function LoadBlogList() {
               alt="Image"
               fill
               className="rounded-t-lg object-cover"
-              loading="eager"
               priority
             />
           </div>
