@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
         port: "",
       },
       {
-        hostname: "good-dotterel-373.convex.cloud",
+        hostname: "prestigious-fly-605.convex.cloud",
         protocol: "https",
         port: "",
       },
