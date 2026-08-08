@@ -46,7 +46,7 @@ async function getCachedPosts() {
 }
 
 async function LoadBlogList() {
-  await connection();
+  // await connection();
   const data = await getCachedPosts();
 
   return (
