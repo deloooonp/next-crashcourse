@@ -39,11 +39,15 @@ export default function BlogPage() {
   );
 }
 
-async function LoadBlogList() {
+async function getCachedPosts() {
   "use cache";
   cacheLife("hours");
-  // await connection();
-  const data = await fetchQuery(api.posts.getPosts);
+  return await fetchQuery(api.posts.getPosts);
+}
+
+async function LoadBlogList() {
+  await connection();
+  const data = await getCachedPosts();
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
